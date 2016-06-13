@@ -1,0 +1,177 @@
+\documentclass[10pt,landscape]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{mdframed}
+\usepackage{soul}
+\usepackage{listings}
+
+% To make this come out properly in landscape mode, do one of the following
+% 1.
+%  pdflatex latexsheet.tex
+%
+% 2.
+%  latex latexsheet.tex
+%  dvips -P pdf  -t landscape latexsheet.dvi
+%  ps2pdf latexsheet.ps
+
+
+% If you're reading this, be prepared for confusion.  Making this was
+% a learning experience for me, and it shows.  Much of the placement
+% was hacked in; if you make it better, let me know...
+
+
+% 2008-04
+% Changed page margin code to use the geometry package. Also added code for
+% conditional page margins, depending on paper size. Thanks to Uwe Ziegenhagen
+% for the suggestions.
+
+% 2006-08
+% Made changes based on suggestions from Gene Cooperman. <gene at ccs.neu.edu>
+
+
+% To Do:
+% \listoffigures \listoftables
+% \setcounter{secnumdepth}{0}
+
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+	{ \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+	{\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+		{\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+		{\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+	}
+
+% Turn off header and footer
+\pagestyle{empty}
+ 
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+\newcommand{\hlc}[2][yellow]{ {\sethlcolor{#1} \hl{#2}} }
+% -----------------------------------------------------------------------
+\begin{document}
+
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+%\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+\begin{center}
+     \Large{Git Cheat Sheet} \\
+\end{center}
+
+\section{Configuration}
+
+\subsection{User Information}
+Git uses a set of user name and user email to sign the commit messages developed by the developer, as such these are required fields that are better configured globally when working from a personal or dedicated computer.
+\begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
+ $ git config --global user.name "[your name]"
+ $ git config --global user.email [your email]
+\end{lstlisting}
+Important to notice that if using your full name when setting the user name the command should not forget to use the "" to enclose a string that accepts spaces on it.
+
+\subsection{Text Editor}
+You can configure the default text editor that will be used when Git needs you to type in a message. If not configured, Git uses your system’s default editor.
+\begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
+ $ git config --global core.editor [editor]
+\end{lstlisting}
+
+\subsection{Merge Tool}
+The right merging tool can save a lot of time and errors when having to merge non fast-forward codes. There is a plethora of merge tools available, however I strongly recommend meld for its intuitive use and simple but effective graphical capability.
+\begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
+ $ git config --global merge.tool [tool_name]
+\end{lstlisting}
+
+\section{Working with Remotes}
+\section{Local and Remote Branches}
+\section{Additional Tools}
+\subsection{stashing}
+Stashing lets to record the current state of the working directory and the index locally without affecting the HEAD pointer. This is very useful when you want to save the code (you do not consider it ready to commit) but want to go back to a clean working directory. The command saves your local modifications away and reverts the working directory to match the HEAD commit.
+\begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
+ $ git stash save
+\end{lstlisting}
+The previous command will save your work locally so that you can easily change your effort to other branches if needed.
+Once work has been completed
+\begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
+ $ git stash list
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
+ $ git stash apply stash@{[stash_number]}
+\end{lstlisting}
+
+
+
+\subsection{logs}
+The command display a list of the commits in the repository. By default it shows the SHA-1 number , the commit message and the author of the commit. Of relevant use is the option \hlc[lightgray]{- -oneline} which display a brief version of the above message description that consist of the SHA-1 number and the commit message
+\begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
+ $ git log <options> 
+\end{lstlisting}
+The command is ideal when trying to go back to previous states as its shows the SHA-1 number required for the checkout action.
+
+\subsection{remotes}
+\begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
+ $ git remote show [remote_name]
+\end{lstlisting}
+Show additional information about the remote and its relationship between remote and local branches. This command is ideal to list what remotes branches are being tracked and the pushing order of the local repository
+ 
+\subsection{gitk}
+Even though is not officially part of the Git software, the gitk tool is an excellent visualizer of a repository history
+\begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
+ $ gitk [<options>] [<revision range>] [--] [<path>...]
+\end{lstlisting}
+Of particular interest is the combination of revision ranges which will basically plot the differences between the given revision and the path 
+
+\rule{0.3\linewidth}{0.25pt}
+\scriptsize
+
+Copyright \copyright\ 2016 Damian Miralles
+
+\href{https://github.com/dmiralles2009/Prelims.git}{https://github.com/dmiralles2009/git_cheat_sheet.git} \newline
+This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+\href{http://creativecommons.org/licenses/by-nc-sa/3.0/}{See here}
+
+\end{multicols}
+\end{document}
