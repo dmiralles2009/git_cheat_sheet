@@ -115,59 +115,74 @@ Important to notice that if using your full name when setting the user name the 
 \subsection{Text Editor}
 You can configure the default text editor that will be used when Git needs you to type in a message. If not configured, Git uses your system’s default editor.
 \begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
- $ git config --global core.editor [editor]
+ $ git config --global core.editor <editor>
 \end{lstlisting}
+Since I run the git commands directly from a terminal I strongly recommend using a terminal base editor as vim, nano or emacs.
 
 \subsection{Merge Tool}
-The right merging tool can save a lot of time and errors when having to merge non fast-forward codes. There is a plethora of merge tools available, however I strongly recommend meld for its intuitive use and simple but effective graphical capability.
+The right merging tool can save a lot of time and errors when having to merge non fast-forward codes. There is a plethora of merge tools available, however I strongly recommend \hlc[lightgray]{meld} for its intuitive use and for its simple but effective graphical user interface.
 \begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
- $ git config --global merge.tool [tool_name]
+ $ git config --global merge.tool meld
 \end{lstlisting}
+Notice that you could change \hlc[lightgray]{meld} for the name of any other merging tool available.
 
-\subsection{Save on typing}
-If you are using HTTPS URL to push your changes to a given repository the Git server will ask for confirmation through your username and password for every command accessing the repo. The command below will store the credentials in memory for a few minutes and will perform the validation automatically. The automatically validation process only happens after an initial manual validation and will last for a couple of minutes.
+\subsection{Save on Typing}
+If you are using HTTPS URL to push your changes to a given repository the Git server will ask for confirmation through your user-name and password for every command accessing the repository. However you can store the credentials in memory for a few minutes and perform validation automatically, think of it as a timed log in session with the remote repository.
 \begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
  $ git config --global credential.helper cache
 \end{lstlisting}
 
 \section{Working with Remotes}
 
-\subsection{Tracking }
-Checking out a local branch from a remote-tracking branch automatically creates what is called a “tracking branch” (and the branch it tracks is called an “upstream branch”). Tracking branches are local branches that have a direct relationship to a remote branch. If you’re on a tracking branch and type git pull, Git automatically knows which server to fetch from and branch to merge into.
+\subsection{Tracking}
+Checking out a local branch from a remote-tracking branch automatically creates what is called a “tracking branch” (and the branch it tracks is called an “upstream branch”). Tracking branches are local branches that have a direct relationship to a remote branch.
+\begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
+ $ git checkout -b [l_branch] <remote>/<branch> 
+\end{lstlisting}
+Notice how the \hlc[lightgray]{l\_branch} refers to the name of the newly created tracking branch and its upstream being \hlc[lightgray]{branch}. For example, assume that a new bug as been reported through issue 110, then we can easily checkout the code to fix it as:
+\begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
+ $ git checkout -b issue110 origin/master
+\end{lstlisting}
 
 \subsection{Cloning Remotes}
-The command display a list of the commits in the repository. By default it shows the SHA-1 number , the commit message and the author of the commit. Of relevant use is the option \hlc[lightgray]{- -oneline} which display a brief version of the above message description that consist of the SHA-1 number and the commit message
+Cloning is a way of start code development with respect an existing repository, it basically allow us to:
+\begin{itemize}
+\item Clones a repository into a newly created directory
+\item Creates remote-tracking branches for each branch in the cloned repository
+\item Creates and checks out an initial branch that is forked from the cloned repository’s currently active branch
+\end{itemize}
+
 \begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
- $ git clone 
- https://github.com/dmiralles2009/git_cheat_sheet.git 
+ $ git clone [-b <name>] 
+ https://github.com/<user>/<repo>.git  [dir]
 \end{lstlisting}
-The command is ideal when trying to go back to previous states as its shows the SHA-1 number required for the checkout action.
+Notice that \hlc[lightgray]{-b \textless name\textgreater} may refer to a specific branch that wish to be cloned and \hlc[lightgray]{dir} is the name of the local folder to clone into. The command above shows a cloning using a git url via HTTPS, however git is able to manage other protocols such as SSH and its own git protocol.
 
 \subsection{Adding Remotes}
-Git repositories can be hosted locally or remotely. Git makes an special dsitinction for repositories hosted remotely in its interface. When a repository is created locally and it is desired to hosted remotely after its creation, a remote addition is required with:
+Git repositories can be hosted locally or remotely. Git makes an special distinction for repositories hosted remotely in its interface. When a repository is created locally and it is desired to hosted remotely after its creation, a remote addition is required with:
 \begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
  $ git remote add <remote_name> <url>
 \end{lstlisting}
 Notice that traditionally the remote name is defined as \hlc[lightgray]{origin}, but this is only and identifier. Nothing stops you from using another name for your remote repositories.
 
 \subsection{Inspecting Remotes}
-The command is ideal when trying to get some information about the remote \hlc[lightgray]{\textless remote\_name \textgreater}. The command prints a relationship of the remote branches that are being tracked and its local origins.
+The command is ideal when trying to get some information about the remote \hlc[lightgray]{\textless remote\_name\textgreater}. The command prints a relationship of the remote branches that are being tracked and its local origins.
 \begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
  $ git remote show  <remote_name>
 \end{lstlisting}
 
-
-\section{Local and Remote Branches}
-Checking out a local branch from a remote-tracking branch automatically creates what is called a “tracking branch” (and the branch it tracks is called an “upstream branch”). Tracking branches are local branches that have a direct relationship to a remote branch. 
+\section{Remote Branches}
+\subsection{Checking Out}
+Checking out a local branch from a remote-tracking branch automatically creates what is called a \textit{"tracking branch”} (and the branch it tracks is called an \textit{"upstream branch"}). Tracking branches are local branches that have a direct relationship to a remote branch. 
 \begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
  $ git checkout -b [branch] [remote]/[branch]
 \end{lstlisting}
 This command is ideal when for example checking out a branch to perform a bug fix, because it will set the upstream state automatically.
 
-\subsection{Delete remote branch}
+\subsection{Deleting Remote Branches}
 After work on a given branch has been completed, and the user wants to delete that deprecated branch, the git push command can be used for deletions as in:
 \begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
- $ git push origin --delete <branch_name>
+ $ git push origin --delete <branch>
 \end{lstlisting}
 Notice that \hlc[lightgray]{branch\_name} refers to the remote branch that is targeted in the deletion.
 
@@ -177,12 +192,14 @@ Stashing lets to record the current state of the working directory and the index
 \begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
  $ git stash save
 \end{lstlisting}
-The previous command will save your work locally so that you can easily change your effort to other branches if needed.
-Once work has been completed
+The previous command will save your work locally with a stash number (for later referencing)so that you can easily change your effort to other branches if needed.
+
+
+Once work has been completed, the following command may be run to show the current stash numbers available 
 \begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
  $ git stash list
 \end{lstlisting}
-
+The stash number will be used to revert your work to its latest state after as
 \begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
  $ git stash apply stash@{[stash_number]}
 \end{lstlisting}
@@ -209,7 +226,7 @@ The command display a list of the commits in the repository. By default it shows
 \end{lstlisting}
 The command is ideal when trying to go back to previous states as its shows the SHA-1 number required for the checkout action.
 
-\subsection{gitk}
+\subsection{Gitk}
 Even though is not officially part of the Git software, the gitk tool is an excellent visualizer of a repository history
 \begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
  $ gitk [<options>] [<revision range>] [--] [<path>...]
@@ -221,7 +238,7 @@ Of particular interest is the combination of revision ranges which will basicall
 
 Copyright \copyright\ 2016 Damian Miralles
 
-\href{https://github.com/dmiralles2009/Prelims.git}{Access git repo here} \newline
+\href{https://github.com/dmiralles2009/git_cheat_sheet.git}{https://github.com/dmiralles2009/git\_cheat\_sheet.git} \newline
 This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported 
 \href{http://creativecommons.org/licenses/by-nc-sa/3.0/}{License}
 
