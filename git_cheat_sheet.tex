@@ -164,12 +164,20 @@ Checking out a local branch from a remote-tracking branch automatically creates 
 \end{lstlisting}
 This command is ideal when for example checking out a branch to perform a bug fix, because it will set the upstream state automatically.
 
-\subsection{Delete remote branch}
+\subsection{Deleting Branches}
+\subsubsection{Remotes Branches}
 After work on a given branch has been completed, and the user wants to delete that deprecated branch, the git push command can be used for deletions as in:
 \begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
  $ git push origin --delete <branch_name>
 \end{lstlisting}
 Notice that \hlc[lightgray]{branch\_name} refers to the remote branch that is targeted in the deletion.
+
+\subsubsection{Local Branches}
+After work on a given branch has been completed, and the user wants to delete that deprecated branch, the git push command can be used for deletions as in:
+\begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
+ $ git branch (-d | -D) [-r]  <branch_name>
+\end{lstlisting}
+The -d option delete the branch only if it is fully merged to its tracking or upstream branch, however the -D option deletes it regarding its state. In here the \hlc[lightgray]{branch\_name} refers to the local branch that is targeted in the deletion.
 
 \section{Additional Tools}
 \subsection{Stashing}
@@ -210,11 +218,11 @@ The command display a list of the commits in the repository. By default it shows
 The command is ideal when trying to go back to previous states as its shows the SHA-1 number required for the checkout action.
 
 \subsection{gitk}
-Even though is not officially part of the Git software, the gitk tool is an excellent visualizer of a repository history
+Even though is not officially part of the Git software, the gitk tool is an excellent visualizer of a repository history. Simply run gitk on the terminal and a display with all commit history will be displayed. However one of the most useful features of gitk is to show the difference between commits given its SHA-1 number.
 \begin{lstlisting}[language=bash, backgroundcolor = \color{lightgray}]
- $ gitk [<options>] [<revision range>] [--] [<path>...]
+ $ gitk [from] [to]
 \end{lstlisting}
-Of particular interest is the combination of revision ranges which will basically plot the differences between the given revision and the path 
+In here from and to refer to the SHA-1 number of the targeting commits.  
 
 \rule{0.3\linewidth}{0.25pt}
 \scriptsize
